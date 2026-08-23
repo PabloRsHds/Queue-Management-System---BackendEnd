@@ -26,11 +26,6 @@ public class UnitController {
         return ResponseEntity.ok().body(this.unitService.getAllUnits(page, size, search));
     }
 
-    @GetMapping("/{unitId}")
-    public ResponseEntity<ResponseUnitDto> getUnitById(@PathVariable String unitId) {
-        return ResponseEntity.ok().body(this.unitService.getUnitById(unitId));
-    }
-
     @PostMapping
     public ResponseEntity<ResponseUnitDto> createUnit(@RequestBody @Valid CreateUnitDto dto) {
         return ResponseEntity.ok().body(this.unitService.createUnit(dto));

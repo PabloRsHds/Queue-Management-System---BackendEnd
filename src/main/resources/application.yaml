@@ -12,6 +12,6 @@ spring:
       ddl-auto: update
 
 public:
-  key: classpath:public-key
+  key: classpath:public.example-key
 private:
-  key: classpath:private-key
+  key: classpath:private.example-key

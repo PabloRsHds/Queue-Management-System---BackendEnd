@@ -286,24 +286,24 @@ public class TicketService {
     private Schedule findScheduleById(String scheduleId) {
         return this.scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> {
-                    log.warn("Schedule não encontrado com ID: {}", scheduleId);
-                    return new ScheduleNotFoundException(scheduleId);
+                    log.warn("Agendamento não encontrado com ID: {}", scheduleId);
+                    return new ScheduleNotFoundException("Agendamento não encontrado com ID: " + scheduleId);
                 });
     }
 
     private Customer findCustomerById(String customerId) {
         return this.customerRepository.findByCustomerId(customerId)
                 .orElseThrow(() -> {
-                    log.warn("Customer não encontrado com ID: {}", customerId);
-                    return new CustomerNotFoundException(customerId);
+                    log.warn("Cliente não encontrado com ID: {}", customerId);
+                    return new CustomerNotFoundException("Cliente não encontrado com ID: " + customerId);
                 });
     }
 
     private ServiceManagement findServiceManagementById(String serviceManagementId) {
         return this.serviceManagementRepository.findByServiceManagementId(serviceManagementId)
                 .orElseThrow(() -> {
-                    log.warn("ServiceManagement não encontrado com ID: {}", serviceManagementId);
-                    return new ServiceManagementNotFoundException(serviceManagementId);
+                    log.warn("Serviço não encontrado com ID: {}", serviceManagementId);
+                    return new ServiceManagementNotFoundException("Serviço não encontrado com ID: " + serviceManagementId);
                 });
     }
 
@@ -311,7 +311,7 @@ public class TicketService {
         return this.ticketRepository.findById(ticketId)
                 .orElseThrow(() -> {
                     log.warn("Ticket não encontrado com ID: {}", ticketId);
-                    return new TicketNotFoundException(ticketId);
+                    return new TicketNotFoundException("Ticket não encontrado com ID: " + ticketId);
                 });
     }
 

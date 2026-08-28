@@ -313,7 +313,7 @@ class UserServiceTest {
             );
 
             assertEquals(
-                    "Este usuário já está cadastrado.",
+                    "Usuário já cadastrado com username: newuser",
                     exception.getMessage()
             );
         }
@@ -335,7 +335,7 @@ class UserServiceTest {
             );
 
             assertEquals(
-                    "Este e-mail já está cadastrado.",
+                    "E-mail já cadastrado: new@test.com",
                     exception.getMessage()
             );
         }
@@ -360,7 +360,7 @@ class UserServiceTest {
             );
 
             assertEquals(
-                    "Este telefone já está cadastrado.",
+                    "Telefone já cadastrado: 11988888888",
                     exception.getMessage()
             );
         }
@@ -388,7 +388,7 @@ class UserServiceTest {
             );
 
             assertEquals(
-                    "Já possuí um usuário alocado para este guichê.",
+                    "Guichê já alocado: 2",
                     exception.getMessage()
             );
         }
@@ -553,7 +553,7 @@ class UserServiceTest {
             );
 
             assertEquals(
-                    "Este usuário já está cadastrado.",
+                    "Usuário já cadastrado com username: updateduser",
                     exception.getMessage()
             );
 

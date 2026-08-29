@@ -157,7 +157,7 @@ public class SchedulingService {
         return this.customerRepository.findByCustomerId(customerId)
                 .orElseThrow(() -> {
                     log.warn("Cliente não encontrado com ID: {}", customerId);
-                    return new CustomerNotFoundException(customerId);
+                    return new CustomerNotFoundException("Cliente não encontrado com ID: " + customerId);
                 });
     }
 
@@ -165,7 +165,7 @@ public class SchedulingService {
         return this.serviceManagementRepository.findByServiceManagementId(serviceManagementId)
                 .orElseThrow(() -> {
                     log.warn("Serviço não encontrado com ID: {}", serviceManagementId);
-                    return new ServiceManagementNotFoundException(serviceManagementId);
+                    return new ServiceManagementNotFoundException("Serviço não encontrado com ID: " + serviceManagementId);
                 });
     }
 
@@ -173,7 +173,7 @@ public class SchedulingService {
         return this.scheduleRepository.findByScheduleId(scheduleId)
                 .orElseThrow(() -> {
                     log.warn("Agendamento não encontrado com ID: {}", scheduleId);
-                    return new ScheduleNotFoundException(scheduleId);
+                    return new ScheduleNotFoundException("Agendamento não encontrado com ID: " + scheduleId);
                 });
     }
 
@@ -181,7 +181,7 @@ public class SchedulingService {
         return this.ticketRepository.findByTicketId(ticketId)
                 .orElseThrow(() -> {
                     log.warn("Ticket não encontrado com ID: {}", ticketId);
-                    return new TicketNotFoundException(ticketId);
+                    return new TicketNotFoundException("Ticket não encontrado com ID: "+ticketId);
                 });
     }
 

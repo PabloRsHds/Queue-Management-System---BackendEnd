@@ -69,23 +69,22 @@ public class UserService {
 
         if (verifyUsername) {
             log.warn("Tentativa de criar usuário com username já existente: {}", dto.username());
-            throw new UserValidationException("Este usuário já está cadastrado.");
+            throw new UserValidationException("Usuário já cadastrado com username: " + dto.username());
         }
 
         if (verifyEmail) {
             log.warn("Tentativa de criar usuário com e-mail já existente: {}", dto.email());
-            throw new UserValidationException("Este e-mail já está cadastrado.");
+            throw new UserValidationException("E-mail já cadastrado: " + dto.email());
         }
 
-        if (verifyPhone
-                &&  dto.phone() != null) {
-            log.warn("Tentativa de criar usuário com telefone já existente: {}", dto.phone());
-            throw new UserValidationException("Este telefone já está cadastrado.");
+        if (dto.phone() != null
+                && verifyPhone) {
+            throw new UserValidationException("Telefone já cadastrado: " + dto.phone());
         }
 
-        if (verifyCounterNumber && dto.counterNumber() != null) {
-            log.warn("Tentativa de criar usuário com guichê já alocado: {}", dto.counterNumber());
-            throw new UserValidationException("Já possuí um usuário alocado para este guichê.");
+        if (dto.counterNumber() != null
+                && verifyCounterNumber) {
+            throw new UserValidationException("Guichê já alocado: " + dto.counterNumber());
         }
 
 
@@ -140,7 +139,7 @@ public class UserService {
                 && this.userRepository.existsByUsername(dto.username())) {
 
             log.warn("Tentativa de atualizar usuário com username já existente: {}", dto.username());
-            throw new UserValidationException("Este usuário já está cadastrado.");
+            throw new UserValidationException("Usuário já cadastrado com username: " + dto.username());
         }
 
         if (dto.email() != null
@@ -149,7 +148,7 @@ public class UserService {
                 && this.userRepository.existsByEmail(dto.email())) {
 
             log.warn("Tentativa de atualizar usuário com e-mail já existente: {}", dto.email());
-            throw new UserValidationException("Este e-mail já está cadastrado.");
+            throw new UserValidationException("E-mail já cadastrado: " + dto.email());
         }
 
         if (dto.phone() != null
@@ -158,7 +157,7 @@ public class UserService {
                 && this.userRepository.existsByPhone(dto.phone())) {
 
             log.warn("Tentativa de atualizar usuário com telefone já existente: {}", dto.phone());
-            throw new UserValidationException("Este telefone já está cadastrado.");
+            throw new UserValidationException("Telefone já cadastrado: " + dto.phone());
         }
 
         if (dto.counterNumber() != null
@@ -166,7 +165,7 @@ public class UserService {
                 && this.userRepository.existsByCounterNumber(dto.counterNumber())) {
 
             log.warn("Tentativa de atualizar usuário com guichê já alocado: {}", dto.counterNumber());
-            throw new UserValidationException("Já possui um usuário alocado para este guichê.");
+            throw new UserValidationException("Guichê já alocado: " + dto.counterNumber());
         }
 
         log.debug("Validação de atualização concluída para o usuário: {}", entity.getUserId());

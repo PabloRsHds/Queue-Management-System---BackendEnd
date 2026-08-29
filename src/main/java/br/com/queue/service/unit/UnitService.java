@@ -116,17 +116,6 @@ public class UnitService {
 
     // ================================================================================================
 
-    // ============================================ GET BY ID =========================================
-
-    @Transactional(readOnly = true)
-    public ResponseUnitDto getUnitById(String unitId) {
-        log.debug("Buscando unidade por ID: {}", unitId);
-
-        return this.toResponse(this.findUnit(unitId));
-    }
-
-    // ================================================================================================
-
     // ============================================ GET ALL ===========================================
 
     public Page<ResponseUnitDto> getAllUnits(int page, int size, String search) {

@@ -127,13 +127,16 @@ public class LoginService {
                 .claim("UNIT_ID", unitId)
                 .build();
 
-        var accessToken = this.jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
-        var refreshToken = this.jwtEncoder.encode(JwtEncoderParameters.from(claimsRefresh)).getTokenValue();
+        var accessTokenJwt = this.jwtEncoder.encode(JwtEncoderParameters.from(claims));
+        var refreshTokenJwt = this.jwtEncoder.encode(JwtEncoderParameters.from(claimsRefresh));
 
-        if (accessToken == null || refreshToken == null) {
+        if (accessTokenJwt == null || refreshTokenJwt == null) {
             log.error("Falha ao gerar tokens para o usuário: {}", userId);
-            throw new JwtEncodingException("Unable to generate tokens");
+            throw new JwtEncodingException("Falha ao gerar tokens para o usuário");
         }
+
+        var accessToken = accessTokenJwt.getTokenValue();
+        var refreshToken = refreshTokenJwt.getTokenValue();
 
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
                 .httpOnly(true)

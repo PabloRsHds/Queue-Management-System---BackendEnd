@@ -9,7 +9,6 @@ import br.com.queue.dtos.customer.statistics.ResponseCustomerDashBoardDto;
 import br.com.queue.dtos.customer.update.UpdateCustomerDto;
 import br.com.queue.entities.customer.Customer;
 import br.com.queue.entities.ticket.Ticket;
-import br.com.queue.infra.customer.CustomerAlreadyExistsException;
 import br.com.queue.infra.customer.CustomerNotFoundException;
 import br.com.queue.infra.customer.CustomerValidationException;
 import br.com.queue.repositories.customer.CustomerRepository;
@@ -127,46 +126,39 @@ public class CustomerService {
                 && !dto.cpf().isBlank()
                 && !dto.cpf().equals(entity.getCpf())
                 && this.customerRepository.existsByCpf(dto.cpf())) {
-            if (this.customerRepository.existsByCpf(dto.cpf())) {
-                log.warn("Tentativa de atualizar cliente com CPF já existente: {}", dto.cpf());
-                throw new CustomerValidationException("Já existe um cliente com este CPF.");
-            }
+            // REMOVIDO o if duplicado
+            log.warn("Tentativa de atualizar cliente com CPF já existente: {}", dto.cpf());
+            throw new CustomerValidationException("Já existe um cliente com este CPF.");
         }
 
         // Verifica RG
         if (dto.rg() != null
                 && !dto.rg().isBlank()
                 && !dto.rg().equals(entity.getRg())
-                && this.customerRepository.existsByRg(dto.rg()
-        )) {
-            if (this.customerRepository.existsByRg(dto.rg())) {
-                log.warn("Tentativa de atualizar cliente com RG já existente: {}", dto.rg());
-                throw new CustomerValidationException("Já existe um cliente com este RG.");
-            }
+                && this.customerRepository.existsByRg(dto.rg())) {
+            // REMOVIDO o if duplicado
+            log.warn("Tentativa de atualizar cliente com RG já existente: {}", dto.rg());
+            throw new CustomerValidationException("Já existe um cliente com este RG.");
         }
 
         // Verifica Phone
         if (dto.phone() != null
                 && !dto.phone().isBlank()
                 && !dto.phone().equals(entity.getPhone())
-                && this.customerRepository.existsByPhone(dto.phone())
-        ) {
-            if (this.customerRepository.existsByPhone(dto.phone())) {
-                log.warn("Tentativa de atualizar cliente com telefone já existente: {}", dto.phone());
-                throw new CustomerValidationException("Já existe um cliente com este telefone.");
-            }
+                && this.customerRepository.existsByPhone(dto.phone())) {
+            // REMOVIDO o if duplicado
+            log.warn("Tentativa de atualizar cliente com telefone já existente: {}", dto.phone());
+            throw new CustomerValidationException("Já existe um cliente com este telefone.");
         }
 
         // Verifica Email
         if (dto.email() != null
                 && !dto.email().isBlank()
                 && !dto.email().equals(entity.getEmail())
-                && this.customerRepository.existsByEmail(dto.email())
-        ) {
-            if (this.customerRepository.existsByEmail(dto.email())) {
-                log.warn("Tentativa de atualizar cliente com e-mail já existente: {}", dto.email());
-                throw new CustomerValidationException("Já existe um cliente com este e-mail.");
-            }
+                && this.customerRepository.existsByEmail(dto.email())) {
+            // REMOVIDO o if duplicado
+            log.warn("Tentativa de atualizar cliente com e-mail já existente: {}", dto.email());
+            throw new CustomerValidationException("Já existe um cliente com este e-mail.");
         }
 
         log.debug("Validação de atualização concluída para o cliente: {}", entity.getCustomerId());

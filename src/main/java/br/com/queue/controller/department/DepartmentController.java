@@ -55,6 +55,12 @@ public class DepartmentController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/{departmentId}")
+    public ResponseEntity<ResponseDepartmentDto> getDepartmentById(@PathVariable("departmentId") String departmentId) {
+        return ResponseEntity.ok()
+                .body(this.departmentService.getDepartmentById(departmentId));
+    }
+
     @GetMapping("/statistics")
     public ResponseEntity<ResponseDepartmentDashBoardDto> getStatistics(
             JwtAuthenticationToken token

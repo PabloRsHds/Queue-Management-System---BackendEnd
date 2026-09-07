@@ -5,7 +5,6 @@ import br.com.queue.dtos.user.create.CreateUserDto;
 import br.com.queue.dtos.user.get_user.ResponseUserInfoDto;
 import br.com.queue.dtos.user.metrics.ResponseUserDashBoardDto;
 import br.com.queue.dtos.user.update.UpdateUserDto;
-import br.com.queue.dtos.user.users.ResponseAllUsersDto;
 import br.com.queue.entities.serviceManagement.ServiceManagement;
 import br.com.queue.entities.unit.Unit;
 import br.com.queue.entities.user.User;
@@ -261,7 +260,7 @@ public class UserService {
     // ==============================================================================================================
 
     // ============================================== ALL USERS =====================================================
-    public Page<ResponseAllUsersDto> getAllUsers(JwtAuthenticationToken token, int page, int size, String search) {
+    public Page<ResponseUserDto> getAllUsers(JwtAuthenticationToken token, int page, int size, String search) {
         var unit = this.unitContext.getCurrentUnit(token);
 
         String normalizedSearch = (search == null || search.isBlank())
@@ -295,7 +294,7 @@ public class UserService {
     // ==============================================================================================================
 
     // ========================================== GET STATISTICS ====================================================
-    public ResponseUserDashBoardDto getStatistics(JwtAuthenticationToken token) {
+    public ResponseUserDashBoardDto getUserStatistics(JwtAuthenticationToken token) {
         var unit = this.unitContext.getCurrentUnit(token);
 
         log.debug("Buscando estatísticas de usuários para unidade: {}", unit.getUnitId());
@@ -324,7 +323,7 @@ public class UserService {
     // Serviços auxiliares
     public ResponseUserDto toResponse(User entity) {
         var updateAt = entity.getUpdatedAt() != null
-                ? entity.getUpdatedAt().format(DATE_FORMATTER)
+                ? entity.getUpdatedAt()
                 : null;
 
         return new ResponseUserDto(
@@ -337,7 +336,7 @@ public class UserService {
                 entity.getRole().name(),
                 entity.getCounterNumber(),
                 entity.getActive(),
-                entity.getCreatedAt().format(DATE_FORMATTER),
+                entity.getCreatedAt(),
                 updateAt
         );
     }

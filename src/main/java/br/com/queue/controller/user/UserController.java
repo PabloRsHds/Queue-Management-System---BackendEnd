@@ -5,12 +5,12 @@ import br.com.queue.dtos.user.create.CreateUserDto;
 import br.com.queue.dtos.user.get_user.ResponseUserInfoDto;
 import br.com.queue.dtos.user.metrics.ResponseUserDashBoardDto;
 import br.com.queue.dtos.user.update.UpdateUserDto;
-import br.com.queue.dtos.user.users.ResponseAllUsersDto;
 import br.com.queue.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,65 +22,65 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_MANAGER')")
     public ResponseEntity<ResponseUserDto> createUser(
             JwtAuthenticationToken token,
             @RequestBody CreateUserDto dto
     ) {
-
-        var response = this.userService.createUser(token, dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(this.userService.createUser(token, dto));
     }
 
     @PatchMapping
-    public ResponseEntity<ResponseUserDto> update(
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_MANAGER', 'SCOPE_RECEPTION', 'SCOPE_ATTENDANT')")
+    public ResponseEntity<ResponseUserDto> updateUser(
             @RequestBody UpdateUserDto dto
     ) {
-
-        var response = this.userService.updateUser(dto);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok()
+                .body(this.userService.updateUser(dto));
     }
 
     @GetMapping
-    public ResponseEntity<Page<ResponseAllUsersDto>> getAllUsers(
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_MANAGER')")
+    public ResponseEntity<Page<ResponseUserDto>> getAllUsers(
             JwtAuthenticationToken token,
             @RequestParam int page,
             @RequestParam int size,
             @RequestParam(required = false) String search
     ) {
-
-        var response = this.userService.getAllUsers(token, page, size, search);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok()
+                .body(this.userService.getAllUsers(token, page, size, search));
     }
 
     @GetMapping("/{userId}")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_MANAGER')")
     public ResponseEntity<ResponseUserInfoDto> getUserById(
             @PathVariable String userId
     ) {
-
-        var response = this.userService.getUserById(userId);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok()
+                .body(this.userService.getUserById(userId));
     }
 
     @GetMapping("/token")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_MANAGER', 'SCOPE_RECEPTION', 'SCOPE_ATTENDANT')")
     public ResponseEntity<ResponseUserInfoDto> getUserByToken(
             JwtAuthenticationToken token
     ) {
-
-        var response = this.userService.getUserByToken(token);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok()
+                .body(this.userService.getUserByToken(token));
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<ResponseUserDto> delete(@PathVariable String userId) {
-
-        var response = this.userService.deleteUser(userId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_MANAGER')")
+    public ResponseEntity<ResponseUserDto> deleteUser(@PathVariable String userId) {
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(this.userService.deleteUser(userId));
     }
 
     @GetMapping("/statistics")
-    public ResponseEntity<ResponseUserDashBoardDto> getStatistics(JwtAuthenticationToken token) {
-
-        var response = this.userService.getStatistics(token);
-        return ResponseEntity.ok(response);
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_MANAGER')")
+    public ResponseEntity<ResponseUserDashBoardDto> getUserStatistics(JwtAuthenticationToken token) {
+        return ResponseEntity.ok()
+                .body(this.userService.getUserStatistics(token));
     }
 }

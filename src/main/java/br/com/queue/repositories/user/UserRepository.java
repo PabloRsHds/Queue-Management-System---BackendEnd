@@ -1,12 +1,11 @@
 package br.com.queue.repositories.user;
 
+import br.com.queue.dtos.user.ResponseUserDto;
 import br.com.queue.dtos.user.metrics.*;
-import br.com.queue.dtos.user.users.ResponseAllUsersDto;
 import br.com.queue.entities.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -23,22 +22,29 @@ public interface UserRepository extends JpaRepository<User, String> {
     boolean existsByPhone(String phone);
     boolean existsByCounterNumber(Integer number);
 
-    @Modifying
-    void deleteByUserId(String userId);
-
     @Query(value = """
     SELECT
         u.user_id AS userId,
         u.username AS username,
+        u.name AS name,
+        u.surname AS surname,
+        u.phone AS phone,
         u.email AS email,
         u.role::TEXT AS role,
-        u.active AS active
+        u.counter_number AS counterNumber,
+        u.active AS active,
+        u.created_at AS createdAt,
+        u.updated_at AS updatedAt
     FROM tb_users u
     WHERE u.unit_id = :unitId
     AND (
         :search IS NULL
         OR :search = ''
         OR unaccent(LOWER(u.username))
+            LIKE unaccent(LOWER(CONCAT('%', :search, '%')))
+        OR unaccent(LOWER(u.name))
+            LIKE unaccent(LOWER(CONCAT('%', :search, '%')))
+        OR unaccent(LOWER(u.surname))
             LIKE unaccent(LOWER(CONCAT('%', :search, '%')))
         OR unaccent(LOWER(u.email))
             LIKE unaccent(LOWER(CONCAT('%', :search, '%')))
@@ -49,7 +55,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     )
     ORDER BY COALESCE(u.updated_at, u.created_at) DESC
     """,
-            countQuery = """
+                countQuery = """
     SELECT COUNT(*)
     FROM tb_users u
     WHERE u.unit_id = :unitId
@@ -57,6 +63,10 @@ public interface UserRepository extends JpaRepository<User, String> {
         :search IS NULL
         OR :search = ''
         OR unaccent(LOWER(u.username))
+            LIKE unaccent(LOWER(CONCAT('%', :search, '%')))
+        OR unaccent(LOWER(u.name))
+            LIKE unaccent(LOWER(CONCAT('%', :search, '%')))
+        OR unaccent(LOWER(u.surname))
             LIKE unaccent(LOWER(CONCAT('%', :search, '%')))
         OR unaccent(LOWER(u.email))
             LIKE unaccent(LOWER(CONCAT('%', :search, '%')))
@@ -66,9 +76,9 @@ public interface UserRepository extends JpaRepository<User, String> {
             LIKE LOWER(CONCAT('%', :search, '%'))
     )
     """,
-            nativeQuery = true
-    )
-    Page<ResponseAllUsersDto> findAllWithSearch(
+                nativeQuery = true
+        )
+    Page<ResponseUserDto> findAllWithSearch(
             @Param("unitId") String unitId,
             @Param("search") String search,
             Pageable pageable

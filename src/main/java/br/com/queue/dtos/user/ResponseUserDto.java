@@ -1,5 +1,7 @@
 package br.com.queue.dtos.user;
 
+import java.time.LocalDateTime;
+
 public record ResponseUserDto(
 
         String userId,
@@ -11,7 +13,7 @@ public record ResponseUserDto(
         String role,
         Integer counterNumber,
         Boolean active,
-        String createdAt,
-        String updatedAt
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
 ) {
 }

@@ -1,8 +1,8 @@
 package br.com.queue.service.user;
 
+import br.com.queue.dtos.user.ResponseUserDto;
 import br.com.queue.dtos.user.create.CreateUserDto;
 import br.com.queue.dtos.user.update.UpdateUserDto;
-import br.com.queue.dtos.user.users.ResponseAllUsersDto;
 import br.com.queue.entities.serviceManagement.ServiceManagement;
 import br.com.queue.entities.unit.Unit;
 import br.com.queue.entities.user.User;
@@ -817,7 +817,7 @@ class UserServiceTest {
 
             var pageable = PageRequest.of(0, 10);
 
-            Page<ResponseAllUsersDto> page =
+            Page<ResponseUserDto> page =
                     new PageImpl<>(List.of());
 
             when(unitContext.getCurrentUnit(token))
@@ -1029,7 +1029,7 @@ class UserServiceTest {
                     .thenReturn(null);
 
             var response =
-                    userService.getStatistics(token);
+                    userService.getUserStatistics(token);
 
             assertNotNull(response);
 

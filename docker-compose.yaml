@@ -1,0 +1,41 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: queue-postgres
+    restart: unless-stopped
+
+
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    ports:
+      - "${POSTGRES_PORT}:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: queue-backend
+    restart: unless-stopped
+
+    depends_on:
+      - postgres
+
+    environment:
+      POSTGRES_URL: jdbc:postgresql://postgres:${POSTGRES_PORT}/${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      FRONTEND_URL: ${FRONTEND_URL}
+
+    ports:
+      - "${BACKEND_URL}:8080"
+
+volumes:
+  postgres_data:

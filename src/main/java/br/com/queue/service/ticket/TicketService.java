@@ -10,6 +10,7 @@ import br.com.queue.entities.customer.Customer;
 import br.com.queue.entities.schedule.Schedule;
 import br.com.queue.entities.serviceManagement.ServiceManagement;
 import br.com.queue.entities.ticket.Ticket;
+import br.com.queue.entities.unit.Unit;
 import br.com.queue.enums.PriorityLevel;
 import br.com.queue.enums.TicketStatus;
 import br.com.queue.infra.customer.CustomerNotFoundException;
@@ -91,7 +92,7 @@ public class TicketService {
     }
 
     private Ticket createNewTicket(
-            br.com.queue.entities.unit.Unit unit,
+            Unit unit,
             Schedule schedule,
             Customer customer,
             ServiceManagement serviceManagement,

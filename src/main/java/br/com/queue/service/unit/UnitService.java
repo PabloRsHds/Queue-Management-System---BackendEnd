@@ -45,7 +45,7 @@ public class UnitService {
 
         var entity = new Unit();
         entity.setName(dto.name());
-        entity.setAddress(dto.address());
+        entity.setAddress(this.normalizeOptional(dto.address()));
         entity.setActive(true);
         entity.setCreatedAt(LocalDateTime.now());
 
@@ -177,6 +177,13 @@ public class UnitService {
 
     private String normalizeSearch(String search) {
         return (search == null || search.isBlank()) ? null : search.trim();
+    }
+
+    private String normalizeOptional(String value) {
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+        return value.trim();
     }
 
     private ResponseUnitDto toResponse(Unit entity) {

@@ -1,12 +1,15 @@
 package br.com.queue.entities.serviceManagement;
 
+import br.com.queue.entities.department.Department;
+import br.com.queue.entities.schedule.Schedule;
 import br.com.queue.entities.ticket.Ticket;
 import br.com.queue.entities.unit.Unit;
 import br.com.queue.entities.user.User;
-import br.com.queue.entities.department.Department;
-import br.com.queue.entities.schedule.Schedule;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -34,7 +37,7 @@ public class ServiceManagement {
     @Column(nullable = false, unique = true)
     private String code;
 
-    private String description;
+    private String description = null;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id", nullable = false)

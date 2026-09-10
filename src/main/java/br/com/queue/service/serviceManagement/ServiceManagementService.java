@@ -76,7 +76,7 @@ public class ServiceManagementService {
         var entity = new ServiceManagement();
         entity.setName(dto.name());
         entity.setCode(dto.code());
-        entity.setDescription(dto.description());
+        entity.setDescription(this.normalizeOptional(dto.description()));
         entity.setDepartment(department);
         entity.setActive(true);
         entity.setCreatedAt(LocalDateTime.now());
@@ -320,5 +320,12 @@ public class ServiceManagementService {
                 entity.getCreatedAt().format(DATE_FORMATTER),
                 updatedAt
         );
+    }
+
+    private String normalizeOptional(String value) {
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+        return value.trim();
     }
 }

@@ -6,7 +6,6 @@ import br.com.queue.dtos.serviceManagement.getServiceDto.ResponseGetServiceByIdD
 import br.com.queue.dtos.serviceManagement.list_service.ResponseServicesForCreatedUser;
 import br.com.queue.dtos.serviceManagement.statistics.ResponseServiceDashBoardDto;
 import br.com.queue.dtos.serviceManagement.update.UpdateServiceManagementDto;
-import br.com.queue.dtos.statistics.ResponseStatisticsDto;
 import br.com.queue.service.serviceManagement.ServiceManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,18 +28,16 @@ public class ServiceManagementController {
             JwtAuthenticationToken token,
             @RequestBody CreateServiceManagementDto dto
     ) {
-
-        var response = this.serviceManagementService.createServiceManagement(token, dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(this.serviceManagementService.createServiceManagement(token, dto));
     }
 
     @PatchMapping
     public ResponseEntity<ResponseServiceManagementDto> updateServiceManagement(
             @RequestBody UpdateServiceManagementDto dto
     ) {
-
-        var response = this.serviceManagementService.updateServiceManagement(dto);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok()
+                .body(this.serviceManagementService.updateServiceManagement(dto));
     }
 
     @GetMapping
@@ -50,38 +47,34 @@ public class ServiceManagementController {
             @RequestParam int size,
             @RequestParam(required = false) String search
     ) {
-
-        var response = this.serviceManagementService.getAllServicesManagement(token, page, size, search);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok()
+                .body(this.serviceManagementService.getAllServicesManagement(token, page, size, search));
     }
 
     @GetMapping("/{serviceManagementId}")
     public ResponseEntity<ResponseGetServiceByIdDto> getServiceManagementById(
             @PathVariable String serviceManagementId
     ) {
-
-        var response = this.serviceManagementService.getServiceManagementById(serviceManagementId);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok()
+                .body(this.serviceManagementService.getServiceManagementById(serviceManagementId));
     }
 
     @GetMapping("/service-for-created-user")
     public ResponseEntity<List<ResponseServicesForCreatedUser>> servicesForCreatedUser() {
-        var response = this.serviceManagementService.servicesForCreatedUser();
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok()
+                .body(this.serviceManagementService.servicesForCreatedUser());
     }
 
     @DeleteMapping("/{serviceManagementId}")
     public ResponseEntity<ResponseServiceManagementDto> deleteServiceManagement(@PathVariable String serviceManagementId) {
-
-        var response = this.serviceManagementService.deleteServiceManagement(serviceManagementId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(this.serviceManagementService.deleteServiceManagement(serviceManagementId));
     }
 
     @GetMapping("/statistics")
     public ResponseEntity<ResponseServiceDashBoardDto> getStatistics(
             JwtAuthenticationToken token) {
-
-        var response = this.serviceManagementService.getStatistics(token);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok()
+                .body(this.serviceManagementService.getStatistics(token));
     }
 }

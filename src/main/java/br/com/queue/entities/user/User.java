@@ -33,9 +33,9 @@ public class User {
     @Column(nullable = false)
     private String surname;
 
-    private String phone;
+    private String phone = null;
 
-    private String email;
+    private String email = null;
 
     @Column(nullable = false)
     private String password;

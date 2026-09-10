@@ -100,8 +100,8 @@ public class UserService {
         entity.setUsername(dto.username());
         entity.setName(dto.name());
         entity.setSurname(dto.surname());
-        entity.setPhone(dto.phone());
-        entity.setEmail(dto.email());
+        entity.setPhone(this.normalizeOptional(dto.phone()));
+        entity.setEmail(this.normalizeOptional(dto.email()));
         entity.setPassword(passwordEncoder.encode(dto.password()));
         entity.setRole(Role.valueOf(dto.role()));
         entity.setCounterNumber(dto.counterNumber());
@@ -371,5 +371,12 @@ public class UserService {
                     log.warn("Usuário não encontrado com ID: {}", userId);
                     return new UserNotFoundException("Usuário não encontrado com ID: " + userId);
                 });
+    }
+
+    private String normalizeOptional(String value) {
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+        return value.trim();
     }
 }

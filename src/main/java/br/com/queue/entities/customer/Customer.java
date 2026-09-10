@@ -26,13 +26,13 @@ public class Customer {
     @Column(nullable = false)
     private String name;
 
-    private String cpf;
+    private String cpf = null;
 
-    private String rg;
+    private String rg = null;
 
-    private String phone;
+    private String phone = null;
 
-    private String email;
+    private String email = null;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

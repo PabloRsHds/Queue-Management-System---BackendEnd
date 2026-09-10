@@ -9,6 +9,7 @@ import br.com.queue.dtos.customer.statistics.ResponseCustomerDashBoardDto;
 import br.com.queue.dtos.customer.update.UpdateCustomerDto;
 import br.com.queue.entities.customer.Customer;
 import br.com.queue.entities.ticket.Ticket;
+import br.com.queue.entities.unit.Unit;
 import br.com.queue.infra.customer.CustomerNotFoundException;
 import br.com.queue.infra.customer.CustomerValidationException;
 import br.com.queue.repositories.customer.CustomerRepository;
@@ -83,17 +84,17 @@ public class CustomerService {
     }
 
     private Customer buildCustomerEntity(
-            br.com.queue.entities.unit.Unit unit,
+            Unit unit,
             CreateCustomerDto dto
     ) {
         log.debug("Construindo entidade Customer para: {}", dto.name());
 
         var entity = new Customer();
         entity.setName(dto.name());
-        entity.setCpf(dto.cpf());
-        entity.setRg(dto.rg());
-        entity.setPhone(dto.phone());
-        entity.setEmail(dto.email());
+        entity.setCpf(this.normalizeOptional(dto.cpf()));
+        entity.setRg(this.normalizeOptional(dto.rg()));
+        entity.setPhone(this.normalizeOptional(dto.phone()));
+        entity.setEmail(this.normalizeOptional(dto.email()));
         entity.setCreatedAt(LocalDateTime.now());
         entity.setUnit(unit);
 
@@ -330,6 +331,13 @@ public class CustomerService {
 
     private String normalizeSearch(String search) {
         return (search == null || search.isBlank()) ? null : search.trim();
+    }
+
+    private String normalizeOptional(String value) {
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+        return value.trim();
     }
 
     private ResponseCustomerDto toResponse(Customer entity) {

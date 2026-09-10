@@ -29,15 +29,15 @@ public class CustomerController {
             JwtAuthenticationToken token,
             @RequestBody CreateCustomerDto dto) {
 
-        var response = this.customerService.registerCustomer(token, dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(this.customerService.registerCustomer(token, dto));
     }
 
     @PatchMapping
     public ResponseEntity<ResponseCustomerDto> updateCustomer(@RequestBody UpdateCustomerDto dto) {
 
-        var response = this.customerService.updateCustomer(dto);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok()
+                .body(this.customerService.updateCustomer(dto));
     }
 
     @GetMapping
@@ -48,29 +48,29 @@ public class CustomerController {
             @RequestParam(required = false) String search
     ) {
 
-        var response = this.customerService.getAllCustomers(token, page, size, search);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok()
+                .body(this.customerService.getAllCustomers(token, page, size, search));
     }
 
     @GetMapping("/ids-and-names")
     public ResponseEntity<List<ResponseGetCustomerIdsAndNames>> getCustomerIdsAndNames() {
 
-        var response = this.customerService.getCustomerIdsAndNames();
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok()
+                .body(this.customerService.getCustomerIdsAndNames());
     }
 
     @GetMapping("/{customerId}")
     public ResponseEntity<ResponseCustomerById> getCustomerById(@PathVariable String customerId) {
 
-        var response = this.customerService.getCustomerById(customerId);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok()
+                .body(this.customerService.getCustomerById(customerId));
     }
 
     @DeleteMapping("/{customerId}")
     public ResponseEntity<ResponseCustomerDto> deleteCustomer(@PathVariable String customerId) {
 
-        var response = this.customerService.deleteCustomer(customerId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(this.customerService.deleteCustomer(customerId));
     }
 
     @GetMapping("/statistics")
@@ -78,7 +78,7 @@ public class CustomerController {
             JwtAuthenticationToken token
     ) {
 
-        var response = this.customerService.getStatistics(token);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok()
+                .body(this.customerService.getStatistics(token));
     }
 }

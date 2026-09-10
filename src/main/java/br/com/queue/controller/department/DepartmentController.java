@@ -25,22 +25,22 @@ public class DepartmentController {
             JwtAuthenticationToken token,
             @RequestBody @Valid CreateDepartmentDto dto) {
 
-        var response = this.departmentService.createDepartment(token, dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(this.departmentService.createDepartment(token, dto));
     }
 
     @PatchMapping
     public ResponseEntity<ResponseDepartmentDto> updateDepartment(@RequestBody UpdateDepartmentDto dto) {
 
-        var response = this.departmentService.updateDepartment(dto);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok()
+                .body(this.departmentService.updateDepartment(dto));
     }
 
     @DeleteMapping("/{departmentId}")
     public ResponseEntity<ResponseDepartmentDto> deleteDepartment(@PathVariable String departmentId) {
 
-        var response = this.departmentService.deleteDepartment(departmentId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(this.departmentService.deleteDepartment(departmentId));
     }
 
     @GetMapping
@@ -51,12 +51,13 @@ public class DepartmentController {
             @RequestParam(required = false) String search
     ) {
 
-        var response = this.departmentService.getAllDepartments(token, page, size, search);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok()
+                .body(this.departmentService.getAllDepartments(token, page, size, search));
     }
 
     @GetMapping("/{departmentId}")
     public ResponseEntity<ResponseDepartmentDto> getDepartmentById(@PathVariable("departmentId") String departmentId) {
+
         return ResponseEntity.ok()
                 .body(this.departmentService.getDepartmentById(departmentId));
     }
@@ -66,7 +67,7 @@ public class DepartmentController {
             JwtAuthenticationToken token
     ) {
 
-        var response = this.departmentService.getStatistics(token);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok()
+                .body(this.departmentService.getStatistics(token));
     }
 }

@@ -25,7 +25,7 @@ public class Department {
 
     @Column(unique = true)
     private String name;
-    private String description;
+    private String description = null;
     private Boolean active;
 
     @Column(name = "created_at")

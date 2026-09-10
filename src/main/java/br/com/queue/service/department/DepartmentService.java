@@ -54,7 +54,7 @@ public class DepartmentService {
 
         var entity = new Department();
         entity.setName(dto.name());
-        entity.setDescription(dto.description());
+        entity.setDescription(this.normalizeOptional(dto.description()));
         entity.setActive(true);
         entity.setUnit(unit);
         entity.setCreatedAt(LocalDateTime.now());
@@ -202,6 +202,13 @@ public class DepartmentService {
 
     private String normalizeSearch(String search) {
         return (search == null || search.isBlank()) ? null : search.trim();
+    }
+
+    private String normalizeOptional(String value) {
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+        return value.trim();
     }
 
     private ResponseDepartmentDto toResponse(Department entity) {

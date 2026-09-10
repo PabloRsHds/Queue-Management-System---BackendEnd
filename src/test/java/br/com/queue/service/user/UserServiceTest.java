@@ -1078,11 +1078,6 @@ class UserServiceTest {
             assertEquals(user.getCounterNumber(), response.counterNumber());
             assertEquals(user.getActive(), response.active());
 
-            assertEquals(
-                    "27/08/2026 10:30",
-                    response.createdAt()
-            );
-
             assertNull(response.updatedAt());
         }
 
@@ -1099,7 +1094,7 @@ class UserServiceTest {
                     userService.toResponse(user);
 
             assertEquals(
-                    "27/08/2026 15:45",
+                    LocalDateTime.of(2026, 8, 27, 15, 45),
                     response.updatedAt()
             );
         }

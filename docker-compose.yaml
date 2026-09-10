@@ -34,6 +34,9 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       FRONTEND_URL: ${FRONTEND_URL}
 
+      ADM_1_EMAIL: ${ADM_1_EMAIL}
+      ADM_1_PASSWORD: ${ADM_1_PASSWORD}
+
     ports:
       - "${BACKEND_URL}:8080"
 

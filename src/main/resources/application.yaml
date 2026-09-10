@@ -19,3 +19,7 @@ private:
 api:
   frontend:
     url: ${FRONTEND_URL}
+
+adm1:
+  email: ${ADM_1_EMAIL}
+  password: ${ADM_1_PASSWORD}

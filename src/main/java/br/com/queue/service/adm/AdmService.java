@@ -6,6 +6,7 @@ import br.com.queue.enums.Role;
 import br.com.queue.repositories.unit.UnitRepository;
 import br.com.queue.repositories.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -20,45 +21,64 @@ public class AdmService implements CommandLineRunner {
     private final UnitRepository unitRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Value("${adm1.email}")
+    private String adm1Email;
+
+    @Value("${adm1.password}")
+    private String adm1Password;
+
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
 
-        var unit = this.unitRepository.findByName("Unidade 01");
-        var user = this.userRepository.findByEmail("admin@gmail.com");
+        Unit unit = createUnitIfNotExists();
 
-        unit.ifPresentOrElse(
-                present -> System.out.println("Unidade 01"),
-                () -> {
+        createAdminIfNotExists(unit);
+    }
 
-                    var unit_central = new Unit();
+    private Unit createUnitIfNotExists() {
 
-                    unit_central.setName("Unidade 01");
-                    unit_central.setAddress("sem endereço físico");
-                    unit_central.setActive(true);
+        return unitRepository.findByName("Unidade 01")
+                .orElseGet(() -> {
 
-                    this.unitRepository.save(unit_central);
-                }
-        );
+                    var unit = new Unit();
 
-        unit.ifPresent(
-                present -> user.ifPresentOrElse(
-                        userPresent -> System.out.println("ADM On"),
+                    unit.setName("Unidade 01");
+                    unit.setAddress("sem endereço físico");
+                    unit.setActive(true);
+
+                    return unitRepository.save(unit);
+                });
+    }
+
+    private void createAdminIfNotExists(Unit unit) {
+
+        userRepository.findByEmail(adm1Email)
+                .ifPresentOrElse(
+                        user -> System.out.println("ADM já existe: " + user.getEmail()),
+
                         () -> {
-                            var adm1 = new User();
 
-                            adm1.setUsername("P2");
-                            adm1.setName("Pablo");
-                            adm1.setSurname("Renato");
-                            adm1.setActive(true);
-                            adm1.setRole(Role.ADMIN);
-                            adm1.setEmail("admin@gmail.com");
-                            adm1.setPassword(this.passwordEncoder.encode("99218841Pp@"));
-                            adm1.setCreatedAt(LocalDateTime.now());
-                            adm1.setUnit(null);
+                            var admin = new User();
 
-                            this.userRepository.save(adm1);
+                            admin.setUsername("P2");
+                            admin.setName("Pablo");
+                            admin.setSurname("Renato");
+                            admin.setActive(true);
+                            admin.setRole(Role.ADMIN);
+
+                            admin.setEmail(adm1Email);
+                            admin.setPassword(
+                                    passwordEncoder.encode(adm1Password)
+                            );
+
+                            admin.setCreatedAt(LocalDateTime.now());
+
+                            admin.setUnit(unit);
+
+                            userRepository.save(admin);
+
+                            System.out.println("ADM criado com sucesso!");
                         }
-                )
-        );
+                );
     }
 }

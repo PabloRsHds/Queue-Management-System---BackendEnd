@@ -23,28 +23,34 @@ public class AttendanceController {
 
     @PostMapping
     public ResponseEntity<ResponseAttendanceDto> startAttendance(JwtAuthenticationToken token, @RequestBody StartAttendanceDto dto) {
+
         return ResponseEntity.status(HttpStatus.CREATED).body(this.attendanceService.startAttendance(token, dto));
     }
 
     @PatchMapping("/finish")
     public ResponseEntity<ResponseFinishAttendanceDto> finishAttendance(@RequestBody FinishAttendanceDto dto) {
-        return ResponseEntity.ok(this.attendanceService.finishAttendance(dto));
+
+        return ResponseEntity.ok()
+                .body(this.attendanceService.finishAttendance(dto));
     }
 
     @GetMapping
     public ResponseEntity<Page<ResponseAllAttendances>> getAllAttendances(@RequestParam int page, @RequestParam int size) {
-        return ResponseEntity.ok(this.attendanceService.getAllAttendances(page, size));
+
+        return ResponseEntity.ok()
+                .body(this.attendanceService.getAllAttendances(page, size));
     }
 
     @DeleteMapping("/{attendanceId}")
     public void deleteAttendance(@PathVariable String attendanceId) {
-        attendanceService.deleteAttendance(attendanceId);
+        this.attendanceService.deleteAttendance(attendanceId);
     }
 
     @GetMapping("/statistics")
     public ResponseEntity<ResponseAttendanceDashboardDto> getAttendanceStatistics(
             JwtAuthenticationToken token
     ) {
-        return ResponseEntity.ok(this.attendanceService.getAttendanceStatistics(token));
+        return ResponseEntity.ok()
+                .body(this.attendanceService.getAttendanceStatistics(token));
     }
 }
